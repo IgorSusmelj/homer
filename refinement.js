@@ -243,6 +243,7 @@ function getDummyList() {
    return [
       {
          id : 1,
+         title : "room 1",
          price : 1200,
          img : 'http://foto.hrsstatic.com/fotos/0/3/256/256/80/000000/http%3A%2F%2Ffoto-origin.hrsstatic.com%2Ffoto%2F4%2F4%2F8%2F9%2F448922%2F448922_r_601772.jpg/9hil%2FhW3wIAlTZpshhnbaw%3D%3D/256,204/6/Aviva_Apartment-Hotel-Gross-Zimmern-Restaurant_Frhstcksraum-1-448922.jpg',
          address : 'some address',
@@ -251,6 +252,7 @@ function getDummyList() {
       },
       {
          id : 2,
+         title : "room 2",
          price : 1500,
          img : 'http://foto.hrsstatic.com/fotos/0/3/256/256/80/000000/http%3A%2F%2Ffoto-origin.hrsstatic.com%2Ffoto%2F4%2F3%2F9%2F5%2F439565%2F439565_ap_580791.jpg/9qrQUuMWa4Vgg%2B%2BPzMyI3Q%3D%3D/256,251/6/Marsil_Apartment_Hotel-Koeln-Appartement-6-439565.jpg',
          address : 'some address',
@@ -259,6 +261,7 @@ function getDummyList() {
       },
       {
          id : 3,
+         title : "room 3",
          price : 1100,
          img : 'http://foto.hrsstatic.com/fotos/0/3/256/256/80/000000/http%3A%2F%2Ffoto-origin.hrsstatic.com%2Ffoto%2F0%2F5%2F1%2F4%2F051497%2F051497_ap_125501.jpg/LbWY7WDaQzeyDZkItH1THQ%3D%3D/256,256/6/Birkebeineren_Hotel_Apartments-Lillehammer-Appartement-51497.jpg',
          address : 'some address',

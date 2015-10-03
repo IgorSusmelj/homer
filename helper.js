@@ -209,14 +209,5 @@ function getFlats(pricelevel, roomMin, roomMax, address, zip, callback){
       });
     }
 
-
   });
 }
-
-
-
-  //Sample code for BEN
- //getFlats('low', 1.5, 4, 'frohdoerlistr. 10 8152 Glattbrugg', 8152, function(res){
-   //console.log(res);
- //});
- 
