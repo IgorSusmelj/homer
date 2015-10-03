@@ -8,11 +8,11 @@ app.get('/', function(req, res){
 
 
 app.get('/init', function(req, res){
-   pricelevel = req.query.pricelevel;
-   address = req.query.address;
-   roomslower = req.query.roomslower;
-   roomsupper = req.query.roomsupper;
-   zip = req.query.zip;
+   var pricelevel = req.query.pricelevel;
+   var address = req.query.address;
+   var roomslower = req.query.roomslower;
+   var roomsupper = req.query.roomsupper;
+   var zip = req.query.zip;
 
    if (pricelevel != "low" &&
       pricelevel != "med" &&
@@ -57,7 +57,7 @@ app.get('/init', function(req, res){
    // TODO
    // flats = f(add, address, roomslower, roomsupper, zip);
 
-   flats = refinement.dummmylist;
+   var flats = refinement.getDummyList();
 
    refinement.init(flats, res);
 });
