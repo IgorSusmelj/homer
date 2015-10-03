@@ -1,7 +1,7 @@
-var express = require('express');
+//var express = require('express');
 var https = require('https');
 
-var app = express();
+//var app = express();
 
 const API_KEY = 'ac22e38757948595929ae831aacadeb7';
 
@@ -32,6 +32,7 @@ function _homegateReq(path, callback) {
       'auth': API_KEY
     }
   };
+
 
   req = https.request(req_params, function (resp) {
     var str = '';
@@ -64,17 +65,44 @@ function search(search_params, callback) {
 };			
 
 
-var getHomegate = function(){
+
+function getFlat(address, distance){
 
 }
 
+	var response;
 
+	search(  	{
+  		'zip' 			: '8005',
+  		'SORT' 			: 'ts', 
+  		'WITHINDISTANCE' : '500'
+
+  	}, function(res){
+		/*for(var i = 0; i < res.length; i++){
+			var obj = res[i];
+			for(var key in obj){
+				var attrName = key;
+				var attrValue = obj[key];
+				console.log(attrName);
+			}
+		}*/
+		for(i in res.items){
+			console.log(i);
+			console.log(res.items[i].sellingPrice)
+		}
+		//console.log();
+
+		//console.log(res);
+
+	});
+
+/*
 app.get('/init', function(req, res){
 
 	var response = search(null, callback);
 
 	var callback = function(){
-		res.send(response);
+		//res.send(response);
 
 	};
 
@@ -82,3 +110,4 @@ app.get('/init', function(req, res){
 });
 
 app.listen(process.env.PORT || 8080);
+*/
