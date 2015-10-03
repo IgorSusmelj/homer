@@ -1,5 +1,5 @@
 {
-	"name"		:	"Homer backend app",
+	"name"		:	"homer",
 	"version"	:	"0.0.1",
 	"dependencies"	: {
 		"express" : "4.x"
