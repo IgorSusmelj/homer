@@ -76,7 +76,7 @@ app.get('/init', function(req, res){
 	var callback = function(){
 		res.send(response);
 
-	}
+	};
 
 	//res.send("Nice guy");
 });
