@@ -121,6 +121,10 @@ function getFlats(pricelevel, roomMin, roomMax, address, zip, callback){
 
   	}, function(resHome){
 
+    //list of all flat prices for price level computations
+    var priceList = Array();
+    var lowpriceBorder, highpriceBorder;
+
   	for(i in resHome.items){
 
       if(resHome.items[i].numberRooms >= roomMin && resHome.items[i].numberRooms <= roomMax){
@@ -133,11 +137,34 @@ function getFlats(pricelevel, roomMin, roomMax, address, zip, callback){
         tmp['numberRooms'] = resHome.items[i].numberRooms;
         tmp['picFilename1Medium'] = resHome.items[i].picFilename1Medium;
 
+        priceList.push(parseInt(resHome.items[i].sellingPrice));
         homegateResponse.push(tmp);
-    }
+      }
 
   	}
 
+    priceList.sort();
+
+    lowpriceBorder = priceList[parseInt(priceList.length/3)];
+    highpriceBorder = priceList[parseInt(2*priceList.length/3)];
+
+
+    //remove items not in price range
+    var tmpHomegateResponse = Array();
+    for(i in homegateResponse){
+      if(pricelevel == 'low'){
+        if(parseInt(homegateResponse[i].sellingPrice) < lowpriceBorder)
+          tmpHomegateResponse.push(homegateResponse[i]);
+      }else if(pricelevel == 'med'){
+        if(parseInt(homegateResponse[i].sellingPrice) < highpriceBorder && parseInt(homegateResponse[i].sellingPrice) > lowpriceBorder)
+          tmpHomegateResponse.push(homegateResponse[i]);
+      }else if(pricelevel == 'high'){
+        if(parseInt(homegateResponse[i].sellingPrice) > highpriceBorder)
+          tmpHomegateResponse.push(homegateResponse[i]);
+      }
+    }
+    homegateResponse.length = 0;
+    homegateResponse = tmpHomegateResponse;
 
 
     var responseCounter = homegateResponse.length;
@@ -184,7 +211,7 @@ function getFlats(pricelevel, roomMin, roomMax, address, zip, callback){
 
 
   //Sample code for BEN
- //getFlats('low', 1.5, 2, 'frohdoerlistr. 10 8152 Glattbrugg', 8152, function(res){
+ //getFlats('low', 1.5, 4, 'frohdoerlistr. 10 8152 Glattbrugg', 8152, function(res){
  //  console.log(res);
  //});
  
