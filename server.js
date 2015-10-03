@@ -8,10 +8,54 @@ app.get('/', function(req, res){
 
 
 app.get('/init', function(req, res){
-	res.send("init");
+   pricelevel = req.query.pricelevel;
+   address = req.query.address;
+   roomslower = req.query.roomslower;
+   roomsupper = req.query.roomsupper;
+
+   if (pricelevel != "low" &&
+      pricelevel != "med" &&
+      pricelevel != "high") {
+      res.send("Invalid pricelevel (" + pricelevel + ")!");
+      return;
+   }
+
+   if (address == undefined) {
+      res.send("Invalid address (undefined)!");
+      return;
+   }
+
+   if (roomslower == undefined) {
+      res.send("Invalid roomslower (undefined)!");
+      return;
+   }
+
+   roomslower = parseFloat(roomslower);
+
+   if (isNaN(roomslower)) {
+      res.send("Invalid roomslower (NaN)!");
+      return;
+   }
+
+   if (roomsupper == undefined) {
+      res.send("Invalid roomsupper (undefined)!");
+      return;
+   }
+
+   if (isNaN(roomsupper)) {
+      res.send("Invalid roomsupper (NaN)!");
+      return;
+   }
+
+   // fetch list matching given parameters
+   // TODO
+   // flats = f(add, address, roomslower, roomsupper);
+
+   flats = refinement.dummmylist;
+
+   refinement.init(flats, res);
 });
 
-// TODO: call refinement.init with flats (JSON array) and res
 app.get('/another', refinement.another);
 app.get('/cheaper', refinement.cheaper);
 app.get('/closer', refinement.closer);
