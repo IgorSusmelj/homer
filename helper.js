@@ -117,21 +117,24 @@ function getFlats(pricelevel, roomMin, roomMax, address, zip, callback){
   		'zip' 			: zip,
   		'SORT' 			: 'ts', 
   		'WITHINDISTANCE' : '50',
-      'NUMBERSRESULTS' : '50'
+      'numberResults' : '500'
 
   	}, function(resHome){
 
   	for(i in resHome.items){
-      var tmp = {};
-      tmp['advId'] = resHome.items[i].advId;
-      tmp['sellingPrice'] = resHome.items[i].sellingPrice;
-      tmp['street'] = resHome.items[i].street;
-      tmp['zip'] = resHome.items[i].zip;
-      tmp['city'] = resHome.items[i].city;
-      tmp['numberRooms'] = resHome.items[i].numberRooms;
-      tmp['picFilename1Medium'] = resHome.items[i].picFilename1Medium;
 
-      homegateResponse.push(tmp);
+      if(resHome.items[i].numberRooms >= roomMin && resHome.items[i].numberRooms <= roomMax){
+        var tmp = {};
+        tmp['advId'] = resHome.items[i].advId;
+        tmp['sellingPrice'] = resHome.items[i].sellingPrice;
+        tmp['street'] = resHome.items[i].street;
+        tmp['zip'] = resHome.items[i].zip;
+        tmp['city'] = resHome.items[i].city;
+        tmp['numberRooms'] = resHome.items[i].numberRooms;
+        tmp['picFilename1Medium'] = resHome.items[i].picFilename1Medium;
+
+        homegateResponse.push(tmp);
+    }
 
   	}
 
@@ -179,9 +182,9 @@ function getFlats(pricelevel, roomMin, roomMax, address, zip, callback){
 }
 
 
-/*
+
   //Sample code for BEN
- getFlats('low', 1.5, 4.5, 'frohdoerlistr. 10 8152 Glattbrugg', function(res){
-   console.log(res);
- });
- */
+ //getFlats('low', 1.5, 2, 'frohdoerlistr. 10 8152 Glattbrugg', 8152, function(res){
+ //  console.log(res);
+ //});
+ 
