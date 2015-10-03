@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var refinement = require('./refinement');
+var helper = require('./helper');
 
 app.get('/', function(req, res){
 	res.send("Hello world");
@@ -65,5 +66,10 @@ app.get('/init', function(req, res){
 app.get('/another', refinement.another);
 app.get('/cheaper', refinement.cheaper);
 app.get('/closer', refinement.closer);
-
+app.get('/debug', function(req, res) {
+   helper.getFlats('low', 1.5, 4, 'frohdoerlistr. 10 8152 Glattbrugg', 8152, function(out){
+      res.send(out);
+    })
+   }
+);
 app.listen(process.env.PORT || 8080);
