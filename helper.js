@@ -97,7 +97,7 @@ function getFlat(address, distance){
 	});
 
 /*
-app.get('/init', function(req, res){
+app.get('/', function(req, res){
 
 	var response = search(null, callback);
 
