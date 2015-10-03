@@ -12,6 +12,7 @@ app.get('/init', function(req, res){
    address = req.query.address;
    roomslower = req.query.roomslower;
    roomsupper = req.query.roomsupper;
+   zip = req.query.zip;
 
    if (pricelevel != "low" &&
       pricelevel != "med" &&
@@ -47,9 +48,14 @@ app.get('/init', function(req, res){
       return;
    }
 
+   if (zip == undefined) {
+      res.send("Invalid zip (undefined)!");
+      return;
+   }
+
    // fetch list matching given parameters
    // TODO
-   // flats = f(add, address, roomslower, roomsupper);
+   // flats = f(add, address, roomslower, roomsupper, zip);
 
    flats = refinement.dummmylist;
 
