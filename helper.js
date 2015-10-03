@@ -1,3 +1,7 @@
+module.exports = {
+   getFlats : getFlats
+}
+
 var https = require('https');
 
 //Key to access homegate api
