@@ -97,7 +97,7 @@ function searchHomegate(search_params, callback) {
 };			
 
 
-function searchTranspot(search_params, callback){
+function searchTransport(search_params, callback){
   path = '?' + _composeGet([search_params]);
 
   _transportReq(path, callback);
@@ -105,7 +105,7 @@ function searchTranspot(search_params, callback){
 
 
 
-function getFlat(pricelevel, roomMin, roomMax, address, callback){
+function getFlats(pricelevel, roomMin, roomMax, address, callback){
 
   var homegateResponse = new Array();
   var travelResponse = {};
@@ -129,25 +129,20 @@ function getFlat(pricelevel, roomMin, roomMax, address, callback){
 
       homegateResponse.push(tmp);
 
-  		// console.log(resHome.items[i].advId);
-  		// console.log(resHome.items[i].sellingPrice);
-    //   console.log(resHome.items[i].street);
-    //   console.log(resHome.items[i].zip);
-    //   console.log(resHome.items[i].city);
-    //   console.log(resHome.items[i].numberRooms);
-    //   console.log(resHome.items[i].picFilename1Medium);
   	}
 
-    //console.log(homegateResponse);
+
 
     var responseCounter = homegateResponse.length;
+    var durationList = Array();
+
     for(i in homegateResponse){
       var hr = homegateResponse[i];
       var from = hr.street + ' ' + hr.city;
       var to = address;
 
 
-      searchTranspot({
+      searchTransport({
           'from'      : from,
           'to'        : to,
           'date'      : '2015-10-05', 
@@ -163,27 +158,26 @@ function getFlat(pricelevel, roomMin, roomMax, address, callback){
             var duration = hours*60 + minutes;
             localBestTime = (duration < localBestTime) ? duration : localBestTime;
           }
+          durationList.push(localBestTime);
 
-          homegateResponse[i]['duration'] = localBestTime;
+          if(--responseCounter <= 0){
+              for(z in homegateResponse){
+                homegateResponse[z]['duration'] = durationList[z];
+              }
+              callback(homegateResponse);
+          }
 
-          if(--responseCounter <= 0)
-            console.log("All items processed");
-            //setTimeout(function(){console.log(homegateResponse)},500);
-
-          //var tmpDuration = {};
-          //tmpDuration['duration'] = localBestTime;
-          //console.log(localBestTime);
-        //console.log(resTrans);
       });
     }
-    //console.log(responseCounter);
-    //console.log(homegateResponse);
-    setTimeout(function(){callback(homegateResponse)},10000);
+
 
   });
 }
 
 
-// getFlat('low', 1.5, 4.5, 'frohdoerlistr. 10 8152 Glattbrugg', function(res){
-//   console.log(res);
-// });
+/*
+  //Sample code for BEN
+ getFlats('low', 1.5, 4.5, 'frohdoerlistr. 10 8152 Glattbrugg', function(res){
+   console.log(res);
+ });
+ */
