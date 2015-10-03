@@ -1,11 +1,10 @@
-//var express = require('express');
 var https = require('https');
 
-//var app = express();
-
+//Key to access homegate api
 const API_KEY = 'ac22e38757948595929ae831aacadeb7';
 
 
+//function to compose multiple parameters set
 function _composeGet(param_sets) {
   // compose GET parameters
   get = [];
@@ -20,6 +19,7 @@ function _composeGet(param_sets) {
   return get.join('&');
 }
 
+//Request for transports
 function _transportReq(path, callback){
   var req_params = {
     protocol: "https:",
@@ -31,7 +31,7 @@ function _transportReq(path, callback){
     }
   };
 
-
+  //https request for transports
   req = https.request(req_params, function (resp) {
     var str = '';
 
@@ -52,7 +52,7 @@ function _transportReq(path, callback){
   req.end();
 }
 
-
+//request for homegate flats
 function _homegateReq(path, callback) {
   var req_params = {
     protocol: "https:",
@@ -65,7 +65,7 @@ function _homegateReq(path, callback) {
     }
   };
 
-
+  //https request for homegate
   req = https.request(req_params, function (resp) {
     var str = '';
 
@@ -86,6 +86,7 @@ function _homegateReq(path, callback) {
   req.end();
 }
 
+//Search funtion which return all flats matching the parameters
 function searchHomegate(search_params, callback) {
   parameters = {
     'language': 'en',
@@ -97,6 +98,7 @@ function searchHomegate(search_params, callback) {
 };			
 
 
+//Search function which returns all transport connections
 function searchTransport(search_params, callback){
   path = '?' + _composeGet([search_params]);
 
@@ -104,7 +106,8 @@ function searchTransport(search_params, callback){
 }
 
 
-
+//function for querying all flats
+//returns best public transport travel time from flat to workplace
 function getFlats(pricelevel, roomMin, roomMax, address, callback){
 
   var homegateResponse = new Array();
