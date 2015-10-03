@@ -85,12 +85,25 @@ function handleCloser(req, res) {
  */
 function Refinement(flats) {
 
-   function remove(array, element) {
-      var index = array.indexOf(element);
-      if (index != -1)
-         array.splice(index, 1);
-      else
-         console.log("Tried to remove non-existent array element!");
+   function pruneTree(cache) {
+      tree = {};
+      tree["currend.id"] = cache["current"].id;
+      tree["another.id"] = cache["another"]["current"].id;
+      tree["another"] = {};
+      tree["another"]["another.id"] = cache["another"]["another"].id;
+      tree["another"]["cheaper.id"] = cache["another"]["cheaper"].id;
+      tree["another"]["closer.id"] = cache["another"]["closer"].id;
+      tree["closer.id"] = cache["closer"]["current"].id;
+      tree["closer"] = {};
+      tree["closer"]["another.id"] = cache["closer"]["another"].id;
+      tree["closer"]["cheaper.id"] = cache["closer"]["cheaper"].id;
+      tree["closer"]["closer.id"] = cache["closer"]["closer"].id;
+      tree["cheaper.id"] = cache["cheaper"]["current"].id;
+      tree["cheaper"] = {};
+      tree["cheaper"]["another.id"] = cache["cheaper"]["another"].id;
+      tree["cheaper"]["cheaper.id"] = cache["cheaper"]["cheaper"].id;
+      tree["cheaper"]["closer.id"] = cache["cheaper"]["closer"].id;
+      return tree;
    }
 
    var currentCache = {};
@@ -104,6 +117,18 @@ function Refinement(flats) {
       rooms : 0.0,
       title : "!!!ERROR!!!"
    };
+
+   function remove(array, element) {
+      if (element == nullFlat)
+         return;
+
+      var index = array.indexOf(element);
+      if (index != -1)
+         array.splice(index, 1);
+      else
+         console.log("Tried to remove non-existent array element!");
+   }
+
 
    var nullLeafCache = {
       current  : nullFlat,
@@ -196,26 +221,24 @@ function Refinement(flats) {
 
    this.anotherCache = function() {
       currentCache = currentCache["another"];
-      generateLeafs();
       remove(flats, currentCache["current"]);
+      generateLeafs();
       return currentCache;
    }
 
    this.cheaperCache = function() {
       currentCache = currentCache["cheaper"];
-      generateLeafs();
       remove(flats, currentCache["current"]);
+      generateLeafs();
       return currentCache;
    }
 
    this.closerCache = function() {
       currentCache = currentCache["closer"];
-      generateLeafs();
       remove(flats, currentCache["current"]);
+      generateLeafs();
       return currentCache;
    }
-
-
 }
 
 function getDummyList() {
