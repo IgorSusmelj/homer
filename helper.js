@@ -110,6 +110,18 @@ function searchTransport(search_params, callback){
 }
 
 
+function checkResponse(data){
+  var tmpData = Array();
+  for(i in data)
+    if(data[i].traveltime < 10000)
+      tmpData.push(data[i]);
+
+  data.length = 0;
+  data = tmpData;
+  return data;
+}
+
+
 //function for querying all flats
 //returns best public transport travel time from flat to workplace
 function getFlats(pricelevel, roomMin, roomMax, address, zip, callback){
@@ -203,7 +215,7 @@ function getFlats(pricelevel, roomMin, roomMax, address, zip, callback){
               for(z in homegateResponse){
                 homegateResponse[z]['traveltime'] = durationList[z];
               }
-              callback(homegateResponse);
+              callback(checkResponse(homegateResponse));
           }
 
       });
@@ -211,3 +223,5 @@ function getFlats(pricelevel, roomMin, roomMax, address, zip, callback){
 
   });
 }
+
+
