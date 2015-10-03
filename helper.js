@@ -108,32 +108,63 @@ function searchTransport(search_params, callback){
 
 //function for querying all flats
 //returns best public transport travel time from flat to workplace
-function getFlats(pricelevel, roomMin, roomMax, address, callback){
+function getFlats(pricelevel, roomMin, roomMax, address, zip, callback){
 
   var homegateResponse = new Array();
   var travelResponse = {};
 
   searchHomegate(  	{
-  		'zip' 			: '8005',
+  		'zip' 			: zip,
   		'SORT' 			: 'ts', 
-  		'WITHINDISTANCE' : '500'
+  		'WITHINDISTANCE' : '50',
+      'numberResults' : '500'
 
   	}, function(resHome){
 
-  	for(i in resHome.items){
-      var tmp = {};
-      tmp['advId'] = resHome.items[i].advId;
-      tmp['sellingPrice'] = resHome.items[i].sellingPrice;
-      tmp['street'] = resHome.items[i].street;
-      tmp['zip'] = resHome.items[i].zip;
-      tmp['city'] = resHome.items[i].city;
-      tmp['numberRooms'] = resHome.items[i].numberRooms;
-      tmp['picFilename1Medium'] = resHome.items[i].picFilename1Medium;
+    //list of all flat prices for price level computations
+    var priceList = Array();
+    var lowpriceBorder, highpriceBorder;
 
-      homegateResponse.push(tmp);
+  	for(i in resHome.items){
+
+      if(resHome.items[i].numberRooms >= roomMin && resHome.items[i].numberRooms <= roomMax){
+        var tmp = {};
+        tmp['id'] = resHome.items[i].advId;
+        tmp['price'] = resHome.items[i].sellingPrice;
+        tmp['address'] = resHome.items[i].street + ' ' + resHome.items[i].city;
+        //tmp['zip'] = resHome.items[i].zip;
+        tmp['rooms'] = resHome.items[i].numberRooms;
+        tmp['img'] = resHome.items[i].picFilename1Medium;
+        tmp['title'] = resHome.items[i].title;
+
+        priceList.push(parseInt(resHome.items[i].sellingPrice));
+        homegateResponse.push(tmp);
+      }
 
   	}
 
+    priceList.sort();
+
+    lowpriceBorder = priceList[parseInt(priceList.length/3)];
+    highpriceBorder = priceList[parseInt(2*priceList.length/3)];
+
+
+    //remove items not in price range
+    var tmpHomegateResponse = Array();
+    for(i in homegateResponse){
+      if(pricelevel == 'low'){
+        if(parseInt(homegateResponse[i].price) < lowpriceBorder)
+          tmpHomegateResponse.push(homegateResponse[i]);
+      }else if(pricelevel == 'med'){
+        if(parseInt(homegateResponse[i].price) < highpriceBorder && parseInt(homegateResponse[i].price) > lowpriceBorder)
+          tmpHomegateResponse.push(homegateResponse[i]);
+      }else if(pricelevel == 'high'){
+        if(parseInt(homegateResponse[i].price) > highpriceBorder)
+          tmpHomegateResponse.push(homegateResponse[i]);
+      }
+    }
+    homegateResponse.length = 0;
+    homegateResponse = tmpHomegateResponse;
 
 
     var responseCounter = homegateResponse.length;
@@ -141,7 +172,7 @@ function getFlats(pricelevel, roomMin, roomMax, address, callback){
 
     for(i in homegateResponse){
       var hr = homegateResponse[i];
-      var from = hr.street + ' ' + hr.city;
+      var from = hr.address;
       var to = address;
 
 
@@ -163,9 +194,10 @@ function getFlats(pricelevel, roomMin, roomMax, address, callback){
           }
           durationList.push(localBestTime);
 
+
           if(--responseCounter <= 0){
               for(z in homegateResponse){
-                homegateResponse[z]['duration'] = durationList[z];
+                homegateResponse[z]['traveltime'] = durationList[z];
               }
               callback(homegateResponse);
           }
@@ -178,9 +210,9 @@ function getFlats(pricelevel, roomMin, roomMax, address, callback){
 }
 
 
-/*
+
   //Sample code for BEN
- getFlats('low', 1.5, 4.5, 'frohdoerlistr. 10 8152 Glattbrugg', function(res){
-   console.log(res);
- });
- */
+ //getFlats('low', 1.5, 4, 'frohdoerlistr. 10 8152 Glattbrugg', 8152, function(res){
+   //console.log(res);
+ //});
+ 
