@@ -108,15 +108,16 @@ function searchTransport(search_params, callback){
 
 //function for querying all flats
 //returns best public transport travel time from flat to workplace
-function getFlats(pricelevel, roomMin, roomMax, address, callback){
+function getFlats(pricelevel, roomMin, roomMax, address, zip, callback){
 
   var homegateResponse = new Array();
   var travelResponse = {};
 
   searchHomegate(  	{
-  		'zip' 			: '8005',
+  		'zip' 			: zip,
   		'SORT' 			: 'ts', 
-  		'WITHINDISTANCE' : '500'
+  		'WITHINDISTANCE' : '50',
+      'NUMBERSRESULTS' : '50'
 
   	}, function(resHome){
 
