@@ -208,10 +208,10 @@ function Refinement(flats) {
       if (index == -1)
          console.log("ASSERTION ERROR (cheaper)!");
 
-      index = Math.round(priceReductionFactor*index);
+      var price = priceReductionFactor*ref.price;
 
       for (var i = index; i >= 0; --i) {
-         if (ref != flats[i])
+         if (ref != flats[i] && flats[i].price <= price)
             return flats[i];
       }
       return nullFlat;
@@ -232,10 +232,10 @@ function Refinement(flats) {
       if (index == -1)
          console.log("ASSERTION ERROR (closer)!");
 
-      index = Math.round(traveltimeReductionFactor*index);
+      var traveltime = traveltimeReductionFactor*ref.traveltime;
 
       for (var i = index; i >= 0; --i) {
-         if (ref != flats[i])
+         if (ref != flats[i] && flats[i].traveltime <= traveltime)
             return flats[i];
       }
       return nullFlat;
