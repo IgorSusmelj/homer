@@ -17,6 +17,7 @@ function init(flats, res) {
    } while (sessions[sessionid] != undefined);
 
    sessions[sessionid] = refinement;
+   refinement.sessionid = sessionid;
 
    var cache = refinement.initialCache();
    cache["sessionid"] = sessionid;
@@ -49,7 +50,9 @@ function handleAnother(req, res) {
    if (refinement == null)
       return;
 
-   res.send(refinement.anotherCache());
+   var cache = refinement.anotherCache();
+   cache["sessionid"] = refinement.sessionid;
+   res.send(cache);
 }
 
 function handleCheaper(req, res) {
@@ -57,7 +60,9 @@ function handleCheaper(req, res) {
    if (refinement == null)
       return;
 
-   res.send(refinement.cheaperCache());
+   var cache = refinement.cheaperCache();
+   cache["sessionid"] = refinement.sessionid;
+   res.send(cache);
 }
 
 function handleCloser(req, res) {
@@ -65,7 +70,9 @@ function handleCloser(req, res) {
    if (refinement == null)
       return;
 
-   res.send(refinement.closerCache());
+   var cache = refinement.closerCache();
+   cache["sessionid"] = refinement.sessionid;
+   res.send(cache);
 }
 
 /**
@@ -82,6 +89,8 @@ function handleCloser(req, res) {
  * Never outputs a flat that was output previously
  */
 function Refinement(flats) {
+
+   this.sessionid = "session_id_incorrectly_initialized";
 
    function pruneTree(cache) {
       tree = {};
