@@ -5,8 +5,8 @@ module.exports = {
    closer : handleCloser,
 }
 
-var priceReductionFactor = 0.7;
-var traveltimeReductionFactor = 0.7;
+var priceReductionFactor = 0.95;
+var traveltimeReductionFactor = 0.90;
 
 /* maps from session id (string) to Refinement instances */
 var sessions = {};
