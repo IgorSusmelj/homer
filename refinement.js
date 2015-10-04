@@ -94,27 +94,6 @@ function Refinement(flats) {
 
    this.sessionid = "session_id_incorrectly_initialized";
 
-   function pruneTree(cache) {
-      tree = {};
-      tree["currend.id"] = cache["current"].id;
-      tree["another.id"] = cache["another"]["current"].id;
-      tree["another"] = {};
-      tree["another"]["another.id"] = cache["another"]["another"].id;
-      tree["another"]["cheaper.id"] = cache["another"]["cheaper"].id;
-      tree["another"]["closer.id"] = cache["another"]["closer"].id;
-      tree["closer.id"] = cache["closer"]["current"].id;
-      tree["closer"] = {};
-      tree["closer"]["another.id"] = cache["closer"]["another"].id;
-      tree["closer"]["cheaper.id"] = cache["closer"]["cheaper"].id;
-      tree["closer"]["closer.id"] = cache["closer"]["closer"].id;
-      tree["cheaper.id"] = cache["cheaper"]["current"].id;
-      tree["cheaper"] = {};
-      tree["cheaper"]["another.id"] = cache["cheaper"]["another"].id;
-      tree["cheaper"]["cheaper.id"] = cache["cheaper"]["cheaper"].id;
-      tree["cheaper"]["closer.id"] = cache["cheaper"]["closer"].id;
-      return tree;
-   }
-
    var currentCache = {};
 
    var nullFlat = {
@@ -159,20 +138,6 @@ function Refinement(flats) {
       return arr;
    }
 
-   var nullLeafCache = {
-      current  : nullFlat,
-      another  : nullFlat,
-      cheaper  : nullFlat,
-      closer  : nullFlat,
-   };
-
-   var nullCache = {
-      current : nullFlat,
-      another : nullLeafCache,
-      cheaper : nullLeafCache,
-      closer : nullLeafCache,
-   };
-
    function initial() {
       if (flats.length == 0)
          return nullFlat;
@@ -181,7 +146,8 @@ function Refinement(flats) {
       return flats[index];
    }
 
-   function findAnother(ref) {
+   function findAnother() {
+      var ref = currentCache.current;
       if (ref == nullFlat)
          return ref;
 
@@ -193,7 +159,8 @@ function Refinement(flats) {
       return nullFlat;
    }
 
-   function findCheaper(ref) {
+   function findCheaper() {
+      var ref = currentCache.current;
       if (ref == nullFlat)
          return ref;
 
@@ -217,7 +184,8 @@ function Refinement(flats) {
       return nullFlat;
    }
 
-   function findCloser(ref) {
+   function findCloser() {
+      var ref = currentCache.current;
       if (ref == nullFlat)
          return ref;
 
@@ -241,68 +209,44 @@ function Refinement(flats) {
       return nullFlat;
    }
 
-   function generateLeaf(leaf, ref) {
-      leaf["another"] = findAnother(ref);
-      leaf["cheaper"] = findCheaper(ref);
-      leaf["closer"] = findCloser(ref);
-   }
-
-   function generateLeafs() {
-      var another = currentCache["another"];
-      var cheaper = currentCache["cheaper"];
-      var closer = currentCache["closer"];
-
-      currentCache["another"] = { current : another };
-      currentCache["cheaper"] = { current : cheaper };
-      currentCache["closer"] = { current : closer };
-
-      generateLeaf(currentCache["another"], another);
-      generateLeaf(currentCache["cheaper"], cheaper);
-      generateLeaf(currentCache["closer"], closer);
+   function generateLeaf() {
+      currentCache["another"] = findAnother();
+      currentCache["cheaper"] = findCheaper();
+      currentCache["closer"] = findCloser();
    }
 
    this.initialCache = function() {
 
-      var cache = {};
+      currentCache = {};
       var first = initial();
 
-      cache["current"] = first;
+      currentCache["current"] = first;
+      generateLeaf();
 
-      cache["another"] = {};
-      cache["cheaper"] = {};
-      cache["closer"] = {};
-
-      var another = cache["another"]["current"] = findAnother(first);
-      var cheaper = cache["cheaper"]["current"] = findCheaper(first);
-      var closer = cache["closer"]["current"] = findCloser(first);
-
-      remove(flats, first);
-
-      generateLeaf(cache["another"], another);
-      generateLeaf(cache["cheaper"], cheaper);
-      generateLeaf(cache["closer"], closer);
-
-      return currentCache = cache;
+      return currentCache;
    }
 
    this.anotherCache = function() {
-      currentCache = currentCache["another"];
-      remove(flats, currentCache["current"]);
-      generateLeafs();
+      var old = currentCache.current;
+      currentCache = { current : currentCache.another };
+      generateLeaf();
+      remove(flats, old);
       return currentCache;
    }
 
    this.cheaperCache = function() {
-      currentCache = currentCache["cheaper"];
-      remove(flats, currentCache["current"]);
-      generateLeafs();
+      var old = currentCache.current;
+      currentCache = { current : currentCache.cheaper };
+      generateLeaf();
+      remove(flats, old);
       return currentCache;
    }
 
    this.closerCache = function() {
-      currentCache = currentCache["closer"];
-      remove(flats, currentCache["current"]);
-      generateLeafs();
+      var old = currentCache.current;
+      currentCache = { current : currentCache.closer };
+      generateLeaf();
+      remove(flats, old);
       return currentCache;
    }
 }
