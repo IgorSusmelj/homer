@@ -54,11 +54,6 @@ app.get('/init', function(req, res) {
       return;
    }
 
-   // fetch list matching given parameters
-   // TODO
-   // flats = f(add, address, roomslower, roomsupper, zip);
-
-
    helper.getFlats(pricelevel, roomslower, roomsupper, address, zip, function(out) {
       refinement.init(out, res);
    });
