@@ -53,7 +53,6 @@ function handleAnother(req, res) {
 
    var cache = refinement.anotherCache();
    cache["sessionid"] = refinement.sessionid;
-   console.log(cache["current"]);
    res.send(cache);
 }
 
@@ -64,7 +63,6 @@ function handleCheaper(req, res) {
 
    var cache = refinement.cheaperCache();
    cache["sessionid"] = refinement.sessionid;
-   console.log(cache["current"]);
    res.send(cache);
 }
 
@@ -75,7 +73,6 @@ function handleCloser(req, res) {
 
    var cache = refinement.closerCache();
    cache["sessionid"] = refinement.sessionid;
-   console.log(cache["current"]);
    res.send(cache);
 }
 
