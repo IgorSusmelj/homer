@@ -22,7 +22,7 @@ function init(flats, res) {
    refinement.sessionid = sessionid;
 
    var cache = refinement.initialCache();
-   cache["sessionid"] = sessionid;
+   cache.sessionid = sessionid;
    res.send(cache);
 }
 
@@ -53,7 +53,7 @@ function handleAnother(req, res) {
       return;
 
    var cache = refinement.anotherCache();
-   cache["sessionid"] = refinement.sessionid;
+   cache.sessionid = refinement.sessionid;
    res.send(cache);
 }
 
@@ -63,7 +63,7 @@ function handleCheaper(req, res) {
       return;
 
    var cache = refinement.cheaperCache();
-   cache["sessionid"] = refinement.sessionid;
+   cache.sessionid = refinement.sessionid;
    res.send(cache);
 }
 
@@ -73,7 +73,7 @@ function handleCloser(req, res) {
       return;
 
    var cache = refinement.closerCache();
-   cache["sessionid"] = refinement.sessionid;
+   cache.sessionid = refinement.sessionid;
    res.send(cache);
 }
 
@@ -210,9 +210,9 @@ function Refinement(flats) {
    }
 
    function generateLeaf() {
-      currentCache["another"] = findAnother();
-      currentCache["cheaper"] = findCheaper();
-      currentCache["closer"] = findCloser();
+      currentCache.another = findAnother();
+      currentCache.cheaper = findCheaper();
+      currentCache.closer = findCloser();
    }
 
    this.initialCache = function() {
@@ -220,7 +220,7 @@ function Refinement(flats) {
       currentCache = {};
       var first = initial();
 
-      currentCache["current"] = first;
+      currentCache.current = first;
       generateLeaf();
 
       return currentCache;
