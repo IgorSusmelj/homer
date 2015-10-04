@@ -5,6 +5,8 @@ module.exports = {
    closer : handleCloser,
 }
 
+var reductionFactor = 0.8;
+
 /* maps from session id (string) to Refinement instances */
 var sessions = {};
 
@@ -203,7 +205,7 @@ function Refinement(flats) {
       if (index == -1)
          console.log("ASSERTION ERROR (cheaper)!");
 
-      index = Math.round(0.9*index);
+      index = Math.round(reductionFactor*index);
 
       for (var i = index; i >= 0; --i) {
          if (ref != flats[i])
@@ -225,7 +227,7 @@ function Refinement(flats) {
       if (index == -1)
          console.log("ASSERTION ERROR (closer)!");
 
-      index = Math.round(0.9*index);
+      index = Math.round(reductionFactor*index);
 
       for (var i = index; i >= 0; --i) {
          if (ref != flats[i])
