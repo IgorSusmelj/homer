@@ -197,6 +197,8 @@ function Refinement(flats) {
          return ref;
 
       flats.sort(function(a, b) {
+         if (typeof(a.price) != "number" || typeof(b.price) != "number")
+            console.log("ASSERTION ERROR 2 (cheaper)");
          return a.price - b.price;
       });
 
@@ -219,6 +221,8 @@ function Refinement(flats) {
          return ref;
 
       flats.sort(function(a, b) {
+         if (typeof(a.traveltime) != "number" || typeof(b.traveltime) != "number")
+            console.log("ASSERTION ERROR 2 (closer)");
          return a.traveltime - b.traveltime;
       });
 
