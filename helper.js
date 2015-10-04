@@ -129,17 +129,34 @@ function getFlats(pricelevel, roomMin, roomMax, address, zip, callback){
   var homegateResponse = new Array();
   var travelResponse = {};
 
+
+  /*
+  searchHomegate({
+    'zip'       : zip,
+    'SORT'      : 'ts', 
+    'WITHINDISTANCE' : '500',
+    'Page' : '2',
+    'numberResults' : '0'
+  }, function(resHomeCount){
+    console.log(resHomeCount);
+  });*/
+
+
   searchHomegate(  	{
   		'zip' 			: zip,
   		'SORT' 			: 'ts', 
-  		'WITHINDISTANCE' : '50',
-      'numberResults' : '500'
+  		'withinDistance' : '100',
+      'numberResults' : '200',
+      'roomsFrom' : roomMin,
+      'roomsTo' : roomMax
 
   	}, function(resHome){
 
     //list of all flat prices for price level computations
     var priceList = Array();
     var lowpriceBorder, highpriceBorder;
+
+    console.log("found flats: " + resHome.items.length);
 
   	for(i in resHome.items){
 
@@ -158,6 +175,8 @@ function getFlats(pricelevel, roomMin, roomMax, address, zip, callback){
       }
 
   	}
+
+    console.log("flats after room number constraint: " + homegateResponse.length);
 
     priceList.sort();
 
@@ -182,6 +201,8 @@ function getFlats(pricelevel, roomMin, roomMax, address, zip, callback){
     homegateResponse.length = 0;
     homegateResponse = tmpHomegateResponse;
 
+
+    console.log("flats after price level constraint: " + homegateResponse.length);
 
     var responseCounter = homegateResponse.length;
     var durationList = Array();
@@ -215,6 +236,7 @@ function getFlats(pricelevel, roomMin, roomMax, address, zip, callback){
               for(z in homegateResponse){
                 homegateResponse[z]['traveltime'] = durationList[z];
               }
+              console.log("flats after filtering bad stuff: " + homegateResponse.length);
               callback(checkResponse(homegateResponse));
           }
 
@@ -224,4 +246,8 @@ function getFlats(pricelevel, roomMin, roomMax, address, zip, callback){
   });
 }
 
+
+//getFlats('low', 1.5, 4, 'frohdoerlistr. 10 8152 Glattbrugg', 8152, function(out){
+      //console.log(out);
+//})
 
