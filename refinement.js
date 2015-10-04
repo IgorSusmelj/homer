@@ -5,7 +5,7 @@ module.exports = {
    closer : handleCloser,
 }
 
-var piceReductionFactor = 0.7;
+var priceReductionFactor = 0.7;
 var traveltimeReductionFactor = 0.7;
 
 /* maps from session id (string) to Refinement instances */
